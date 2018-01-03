@@ -10,7 +10,7 @@ def handle_list(arg):
         return []
 
 if len(sys.argv) < 5:
-    print >> sys.stderr, "Usage: %s <ident> <secret> <publish> <subscribe>"%sys.argv[0]
+    print >> sys.stderr, "Usage: %s <ident> <secret> <feeds publish sepeate by , ; e.g. kippo.event,kippo.capture> <feeds subscribe>"%sys.argv[0]
     sys.exit(1)
 
 ident = sys.argv[1]
@@ -28,7 +28,7 @@ rec = {
 client = pymongo.MongoClient()
 res = client.hpfeeds.auth_key.update({"identifier": ident}, {"$set": rec}, upsert=True)
 client.fsync()
-client.disconnect()
+client.close()
 
 if res['updatedExisting']:
     print "updated %s"%rec
